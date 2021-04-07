@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const todoSchema = mongoose.Schema({
+const tag = mongoose.Schema({
     title: String,
     description: String
 },{
@@ -7,4 +7,4 @@ const todoSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('todo',todoSchema);
+module.exports = mongoose.model('tag',tag);
