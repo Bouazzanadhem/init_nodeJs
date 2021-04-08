@@ -23,7 +23,10 @@ const connect = require('./database/connect');
 
 //import routing
 const todoAPI = require('./routes/todoapi');
-const userAPI = require('./routes/userapi')
+const userAPI = require('./routes/userapi');
+const tagAPI = require('./routes/tagapi');
+const tutoralAPI = require('./routes/tutorialapi');
+const userDetAPI = require('./routes/userDetailapi');
 
 app.get('/', async (req, res) => {
   res.json({message: "Hello Nadhem"});
@@ -32,6 +35,9 @@ app.get('/', async (req, res) => {
 //use routing
 app.use('/api/v1',todoAPI);
 app.use('/api/v1',userAPI);
+app.use('/api/v1',tagAPI);
+app.use('/api/v1',tutoralAPI);
+app.use('/api/v1',userDetAPI);
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);

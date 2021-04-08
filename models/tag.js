@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
 const tag = mongoose.Schema({
     title: String,
-    description: String
+    slug: String,
+    tutorials:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "tutorial"
+        }
+    ]
 },{
     versionKey: false,
     timestamps: true

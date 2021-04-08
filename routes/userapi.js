@@ -25,7 +25,7 @@ router.put('/users/:id', async (req, res) => {
 
 router.delete('/users/:id', async (req, res) => {
     const deleteUser = await User.findByIdAndDelete(req.params.id);
-    res.json("{'delete seccussefuly'}");
+    res.json({message: 'delete seccussefuly'});
 });
 
 //6. filter

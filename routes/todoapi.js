@@ -25,7 +25,7 @@ router.put('/todos/:id', async (req, res) => {
 
 router.delete('/todos/:id', async (req, res) => {
     const deleteTodo = await Todo.findByIdAndDelete(req.params.id);
-    res.json("{'delete seccussefuly'}");
+    res.json({message: 'delete seccussefuly'});
 });
 
 module.exports = router;
