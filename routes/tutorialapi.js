@@ -28,7 +28,7 @@ router.put('/tutos/affectTag/:idTuto/:idTag', async (req, res)=>{
     const addTagtoTuto = await Tuto.findByIdAndUpdate(
         req.params.idTuto,
         {$push:{tags: req.params.idTag}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addTagtoTuto);
 });
@@ -38,7 +38,7 @@ router.put('/tutos/desaffectTag/:idTuto/:idTag', async (req, res)=>{
     const addTagtoTuto = await Tuto.findByIdAndUpdate(
         req.params.idTuto,
         {$pull:{tags: req.params.idTag}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addTagtoTuto);
 });

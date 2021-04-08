@@ -28,7 +28,7 @@ router.put('/users/affectDet/:idUser/:idDet', async (req, res)=>{
     const addDettoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$push:{userdetail: req.params.idDet}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addDettoUser);
 });
@@ -37,7 +37,7 @@ router.put('/users/desaffectDet/:idUser/:idDet', async (req, res)=>{
     const addDettoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$pull:{userdetail: req.params.idDet}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addDettoUser);
 });
@@ -47,7 +47,7 @@ router.put('/users/affectTodo/:idUser/:idTodo', async (req, res)=>{
     const addTodotoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$push:{todos: req.params.idTodo}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addTodotoUser);
 });
@@ -56,7 +56,7 @@ router.put('/users/desaffectTodo/:idUser/:idTodo', async (req, res)=>{
     const addTodotoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$pull:{todos: req.params.idTodo}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addTodotoUser);
 });

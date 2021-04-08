@@ -23,7 +23,7 @@ router.put('/todos/affectUser/:idTodo/:idUser', async (req, res)=>{
     const addUsertoTodo = await Tuto.findByIdAndUpdate(
         req.params.idTodo,
         {$push:{user: req.params.idUser}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addUsertoTodo);
 });
@@ -33,7 +33,7 @@ router.put('/todos/desaffectUser/:idTodo/:idUser', async (req, res)=>{
     const addUsertoTodo = await Tuto.findByIdAndUpdate(
         req.params.idTodo,
         {$pull:{user: req.params.idUser}},
-        {new: true, useFindAndModify: false}
+        {new: true}
     )
     res.json(addUsertoTodo);
 });

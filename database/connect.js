@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const option = {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 };
 
 mongoose.connect('mongodb://localhost:27017/database001', option).then(success =>{
