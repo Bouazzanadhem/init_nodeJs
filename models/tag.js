@@ -5,7 +5,7 @@ const tag = mongoose.Schema({
     tutorials:[
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "tutorial"
+            ref: "tuto"
         }
     ]
 },{

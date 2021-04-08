@@ -4,11 +4,11 @@ const router = express.Router();
 const Tuto = require('../models/tutorial');
 
 router.get('/tutos', async (req, res) => {
-    const tutos = await Tuto.find();
+    const tutos = await Tuto.find().populate('tags');
     res.json(tutos);
 });
 
-router.get('/s/:id', async (req, res) => {
+router.get('/tutos/:id', async (req, res) => {
     const tutoId = await Tuto.findById(req.params.id);
     res.json(tutoId);
 });
@@ -23,10 +23,21 @@ router.put('/tutos/:id', async (req, res) => {
     res.json(updateTuto);
 });
 
+//affect Tag to Tuto
 router.put('/tutos/affectTag/:idTuto/:idTag', async (req, res)=>{
     const addTagtoTuto = await Tuto.findByIdAndUpdate(
         req.params.idTuto,
         {$push:{tags: req.params.idTag}},
+        {new: true, useFindAndModify: false}
+    )
+    res.json(addTagtoTuto);
+});
+
+//desaffect Tag to Tuto
+router.put('/tutos/desaffectTag/:idTuto/:idTag', async (req, res)=>{
+    const addTagtoTuto = await Tuto.findByIdAndUpdate(
+        req.params.idTuto,
+        {$pull:{tags: req.params.idTag}},
         {new: true, useFindAndModify: false}
     )
     res.json(addTagtoTuto);

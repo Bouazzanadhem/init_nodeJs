@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require('../models/user');
 
 router.get('/users', async(req, res)=>{
-    const users = await User.find();
+    const users = await User.find().populate('userdetail','todos');
     res.json(users);
 });
 
@@ -21,6 +21,44 @@ router.post('/users', async (req, res) => {
 router.put('/users/:id', async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
     res.json(updateUser);
+});
+
+//affect Detail to User
+router.put('/users/affectDet/:idUser/:idDet', async (req, res)=>{
+    const addDettoUser = await User.findByIdAndUpdate(
+        req.params.idUser,
+        {$push:{userdetail: req.params.idDet}},
+        {new: true, useFindAndModify: false}
+    )
+    res.json(addDettoUser);
+});
+//desaffect Detail to User
+router.put('/users/desaffectDet/:idUser/:idDet', async (req, res)=>{
+    const addDettoUser = await User.findByIdAndUpdate(
+        req.params.idUser,
+        {$pull:{userdetail: req.params.idDet}},
+        {new: true, useFindAndModify: false}
+    )
+    res.json(addDettoUser);
+});
+
+//affect Todo to User
+router.put('/users/affectTodo/:idUser/:idTodo', async (req, res)=>{
+    const addTodotoUser = await User.findByIdAndUpdate(
+        req.params.idUser,
+        {$push:{todos: req.params.idTodo}},
+        {new: true, useFindAndModify: false}
+    )
+    res.json(addTodotoUser);
+});
+//desaffect Todo to User
+router.put('/users/desaffectTodo/:idUser/:idTodo', async (req, res)=>{
+    const addTodotoUser = await User.findByIdAndUpdate(
+        req.params.idUser,
+        {$pull:{todos: req.params.idTodo}},
+        {new: true, useFindAndModify: false}
+    )
+    res.json(addTodotoUser);
 });
 
 router.delete('/users/:id', async (req, res) => {
