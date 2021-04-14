@@ -24,8 +24,8 @@ router.put('/UserDetails/:id', async (req, res) => {
 });
 
 //affect User to Detail
-router.put('/todos/affectUser/:idDet/:idUser', async (req, res)=>{
-    const addUsertoDet = await Tuto.findByIdAndUpdate(
+router.put('/UserDetails/affectUser/:idDet/:idUser', async (req, res)=>{
+    const addUsertoDet = await UserDet.findByIdAndUpdate(
         req.params.idDet,
         {$push:{user: req.params.idUser}},
         {new: true}
@@ -33,8 +33,8 @@ router.put('/todos/affectUser/:idDet/:idUser', async (req, res)=>{
     res.json(addUsertoDet);
 });
 //desaffect User to Detail
-router.put('/todos/desaffectUser/:idDet/:idUser', async (req, res)=>{
-    const addUsertoDet = await Tuto.findByIdAndUpdate(
+router.put('/UserDetails/desaffectUser/:idDet/:idUser', async (req, res)=>{
+    const addUsertoDet = await UserDet.findByIdAndUpdate(
         req.params.idDet,
         {$pull:{user: req.params.idUser}},
         {new: true}

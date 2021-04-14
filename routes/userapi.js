@@ -1,5 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const nodemailer = require("nodemailer");
+const path = require('path');
+const fs = require('fs');
+const ejs = require('ejs');
+
 
 const User = require('../models/user');
 
@@ -84,5 +89,44 @@ router.get('/users/filter/andage', async (req, res)=>{
     res.json(users)
 })
 
+router.post('/users/send', async(req, res)=>{
+    const user = await User.findById(req.params.id);
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth:{
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD,
+        },
+    });
+    const templatepath = path.resolve('./mail_templates','register.html')
+    console.log(templatepath);
+    const registerTemplate = fs.readFileSync(templatepath, {encoding: 'utf-8'});
+    console.log(registerTemplate);
+    const render = ejs.render(registerTemplate, {name: "Nadhem"});
+    console.log(render);
+    const mailOptions = {
+        from: '"Bouazza Nadhem ☺👻☻" <yoshomoto26@gmail.com>',
+        // to: user.email,
+        to: "bouazzanadhem@gmail.com",
+        subject: "Test E-mail ✔",
+        // text: "aalina w aalik snin deyma",
+        // html: registerTemplate,
+        html: render,
+        attachments:[
+            {
+                filename: 'netero.jpg',
+                path: './mail_templates/attachments/netero.jpg'
+            }
+        ]
+    };
+    transporter.sendMail(mailOptions,(err,data)=>{
+        if (err) {
+            res.json(err);
+            console.log(err);
+        }
+        console.log("email sent");
+        res.json({message: 'Email send'})
+    })
+})
 
 module.exports = router;

@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config({ debug: process.env.DEBUG });
+
+
 const port = 3000;
 
 //create app
@@ -18,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
+
 //import connection to database
 const connect = require('./database/connect');
 
@@ -27,6 +32,7 @@ const userAPI = require('./routes/userapi');
 const tagAPI = require('./routes/tagapi');
 const tutoralAPI = require('./routes/tutorialapi');
 const userDetAPI = require('./routes/userDetailapi');
+const uploadAPI = require('./routes/uploadapi');
 
 app.get('/', async (req, res) => {
   res.json({message: "Hello Nadhem"});
@@ -38,6 +44,7 @@ app.use('/api/v1',userAPI);
 app.use('/api/v1',tagAPI);
 app.use('/api/v1',tutoralAPI);
 app.use('/api/v1',userDetAPI);
+app.use('api/v1',uploadAPI);
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
