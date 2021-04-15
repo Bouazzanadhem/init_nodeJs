@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const multer = require('multer');
 const path = require('path');
 const User = require('../models/user');
@@ -40,7 +41,7 @@ const upload = multer({
 });
 
 // uploads Single
-router.post('/uploadImage/id', upload.single('image'), async(req,res)=>{
+router.post('/uploadImage/id', [passport.authenticate('bearer', { session: false }),upload.single('image')], async(req,res)=>{
     // const image = new Image({
     //     image: req.file.path
     // })
@@ -49,31 +50,12 @@ router.post('/uploadImage/id', upload.single('image'), async(req,res)=>{
 })
 
 // uploads Multiple
-router.post('/uploadImageMultiple', upload.array('image',2), async(req,res)=>{
+router.post('/uploadImageMultiple', [passport.authenticate('bearer', { session: false }),upload.array('image',2)], async(req,res)=>{
     // const image = new Image({
     //     image: req.file.path
     // })
     // await image.save()
     res.json({message: 'image uploaded successfully !!'})
 })
-
-
-
-// router.get('/uploads', async(req, res)=>{
-//     const uplo = await Image.find();
-//     res.json(uplo);
-// });
-
-// router.get('/uploads/:id', async (req, res) => {
-//     const uploId = await Image.findById(req.params.id);
-//     res.json(uploId);
-// });
-
-// router.post('/uploads', async(req, res)=>{
-//     const creatuplo = await Image.create(req.body);
-//     res.json(creatuplo);
-// })
-
-
 
 module.exports = router;

@@ -5,8 +5,13 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config({ debug: process.env.DEBUG });
 
-
+//Passport
+const passport = require('./passport/passport');
 const port = 3000;
+
+//Passport Setup.
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 //create app
 const app = express();
@@ -39,8 +44,10 @@ const AuthAPI = require('./routes/authAPI');
 app.get('/', async (req, res) => {
   res.json({message: "Hello Nadhem"});
 });
+
 //static files
 app.use("/",express.static('./uploads'));
+
 //use routing
 app.use('/api/v1',todoAPI);
 app.use('/api/v1',userAPI);

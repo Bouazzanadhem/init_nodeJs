@@ -4,32 +4,33 @@ const nodemailer = require("nodemailer");
 const path = require('path');
 const fs = require('fs');
 const ejs = require('ejs');
+const passport = require('passport');
 
 
 const User = require('../models/user');
 
-router.get('/users', async(req, res)=>{
+router.get('/users',passport.authenticate('bearer', { session: false }), async(req, res)=>{
     const users = await User.find().populate('userdetail','todos');
     res.json(users);
 });
 
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:id',passport.authenticate('bearer', { session: false }), async (req, res) => {
     const userId = await User.findById(req.params.id);
     res.json(userId);
 });
 
-router.post('/users', async (req, res) => {
+router.post('/users',passport.authenticate('bearer', { session: false }), async (req, res) => {
     const createdUser = await User.create(req.body);
     res.json(createdUser);
 });
 
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:id',passport.authenticate('bearer', { session: false }), async (req, res) => {
     const updateUser = await User.findByIdAndUpdate(req.params.id,req.body,{new:true});
     res.json(updateUser);
 });
 
 //affect Detail to User
-router.put('/users/affectDet/:idUser/:idDet', async (req, res)=>{
+router.put('/users/affectDet/:idUser/:idDet',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const addDettoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$push:{userdetail: req.params.idDet}},
@@ -38,7 +39,7 @@ router.put('/users/affectDet/:idUser/:idDet', async (req, res)=>{
     res.json(addDettoUser);
 });
 //desaffect Detail to User
-router.put('/users/desaffectDet/:idUser/:idDet', async (req, res)=>{
+router.put('/users/desaffectDet/:idUser/:idDet',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const addDettoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$pull:{userdetail: req.params.idDet}},
@@ -48,7 +49,7 @@ router.put('/users/desaffectDet/:idUser/:idDet', async (req, res)=>{
 });
 
 //affect Todo to User
-router.put('/users/affectTodo/:idUser/:idTodo', async (req, res)=>{
+router.put('/users/affectTodo/:idUser/:idTodo',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const addTodotoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$push:{todos: req.params.idTodo}},
@@ -57,7 +58,7 @@ router.put('/users/affectTodo/:idUser/:idTodo', async (req, res)=>{
     res.json(addTodotoUser);
 });
 //desaffect Todo to User
-router.put('/users/desaffectTodo/:idUser/:idTodo', async (req, res)=>{
+router.put('/users/desaffectTodo/:idUser/:idTodo',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const addTodotoUser = await User.findByIdAndUpdate(
         req.params.idUser,
         {$pull:{todos: req.params.idTodo}},
@@ -66,30 +67,30 @@ router.put('/users/desaffectTodo/:idUser/:idTodo', async (req, res)=>{
     res.json(addTodotoUser);
 });
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id',passport.authenticate('bearer', { session: false }), async (req, res) => {
     const deleteUser = await User.findByIdAndDelete(req.params.id);
     res.json({message: 'delete seccussefuly'});
 });
 
 //6. filter
-router.get('/users/filter/gtage', async (req, res)=>{
+router.get('/users/filter/gtage',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const users = await User.find({"age" :{$gt:24}});
     res.json(users)
 })
-router.get('/users/filter/ltage', async (req, res)=>{
+router.get('/users/filter/ltage',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const users = await User.find({"age" :{$lt:25}});
     res.json(users)
 })
-router.get('/users/filter/orage', async (req, res)=>{
+router.get('/users/filter/orage',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const users = await User.find().or([{age: 25},{age: 24}]);
     res.json(users)
 })
-router.get('/users/filter/andage', async (req, res)=>{
+router.get('/users/filter/andage',passport.authenticate('bearer', { session: false }), async (req, res)=>{
     const users = await User.find().and([{firstName: 'Nadhem2'},{age: 25}]);
     res.json(users)
 })
 
-router.post('/users/send', async(req, res)=>{
+router.post('/users/send',passport.authenticate('bearer', { session: false }), async(req, res)=>{
     const user = await User.findById(req.params.id);
     const transporter = nodemailer.createTransport({
         service: "gmail",
