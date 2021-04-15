@@ -5,6 +5,7 @@ const user = mongoose.Schema({
     email: String,
     password: String,
     age: Number,
+    photo: String,
     userdetail: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserDetail"
@@ -14,7 +15,8 @@ const user = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "todo"
         }
-    ]
+    ],
+    
 
 },{
     versionKey: false,

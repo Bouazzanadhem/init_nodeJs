@@ -1,39 +1,60 @@
 const express = require('express');
 const router = express.Router();
-
 const multer = require('multer');
-const Image = require('../models/upload');
-const storage = multer.diskStorage({
-    destination: function(req,file,cb){
-        cb(null,'./uploads/');
+const path = require('path');
+const User = require('../models/user');
+
+// const Image = require('../models/upload');
+
+//create the storage
+const myStorage = multer.diskStorage({
+    destination: (req,file,cb) => {
+        const folder = path.resolve('./uploads');
+        cb(null,folder);
     },
-    filename: function(req,file,cb){
-        cb(null,new Date().toISOString().replace(/:/g,'-')+file.originalname);
-    }
+    filename: async(req,file,cb) => {
+        const extension = path.extname(file.originalname) ;
+        // console.log(extension);
+        const newFileName = Date.now() + extension;
+        // console.log(newFileName);
+
+        await User.findByIdAndUpdate(req.params.id,{photo: newFileName},{new:true})
+        cb(null,newFileName);
+    },
+    
 });
 
-const fileFilter = (req, file, cb)=>{
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
-        cb(null, true);
-    }else{
-        cb(null, false);
-    }
-};
+const fileFilter = (req, file, cb) => {
+    const allowedFileExtensions = ['.png','.jpeg','.jpg']
+    const extension = path.extname(file.originalname) ;
+    cb(null, allowedFileExtensions.includes(extension));
+}
 
-const upload = multer({
-    storage: storage,
+//create the multer middleware
+const upload = multer({ 
+    storage: myStorage,
+    fileFilter: fileFilter,
     limits:{
-        fileSize: 1024 * 1024 * 5
+        fileSize: 1024 * 1024 * 20
     },
-    fileFilter: fileFilter
 });
 
-router.post('/uploadImage',upload.single('image'),async(req,res,next)=>{
-    const image = new Image({
-        image: req.file.path
-    })
-    await image.save()
-    res.json(image)
+// uploads Single
+router.post('/uploadImage/id', upload.single('image'), async(req,res)=>{
+    // const image = new Image({
+    //     image: req.file.path
+    // })
+    // await image.save()
+    res.json({message: 'image uploaded successfully !!'})
+})
+
+// uploads Multiple
+router.post('/uploadImageMultiple', upload.array('image',2), async(req,res)=>{
+    // const image = new Image({
+    //     image: req.file.path
+    // })
+    // await image.save()
+    res.json({message: 'image uploaded successfully !!'})
 })
 
 
