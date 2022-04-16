@@ -10,8 +10,13 @@ const passport = require('passport');
 const User = require('../models/user');
 
 router.get('/users',passport.authenticate('bearer', { session: false }), async(req, res)=>{
+    console.log(req.user);
     const users = await User.find().populate('userdetail','todos');
     res.json(users);
+});
+
+router.get('/profile',passport.authenticate('bearer', { session: false }), async(req, res)=>{
+    res.json(req.user);
 });
 
 router.get('/users/:id',passport.authenticate('bearer', { session: false }), async (req, res) => {

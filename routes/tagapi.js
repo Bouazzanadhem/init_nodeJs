@@ -35,12 +35,12 @@ router.put('/tags/affectTuto/:idTag/:idTuto',passport.authenticate('bearer', { s
 
 //desaffect Tuto to Tag
 router.put('/tags/desaffectTuto/:idTag/:idTuto',passport.authenticate('bearer', { session: false }), async (req, res)=>{
-    const addTutotoTag = await Tag.findByIdAndUpdate(
+    const delTutotoTag = await Tag.findByIdAndUpdate(
         req.params.idTag,
         {$pull:{tutorials: req.params.idTuto}},
         {new: true}
     )
-    res.json(addTutotoTag);
+    res.json(delTutotoTag);
 });
 
 router.delete('/tags/:id',passport.authenticate('bearer', { session: false }), async (req, res) => {

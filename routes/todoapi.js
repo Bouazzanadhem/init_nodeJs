@@ -21,7 +21,7 @@ router.post('/todos',passport.authenticate('bearer', { session: false }), async 
 
 //affect User to Todo
 router.put('/todos/affectUser/:idTodo/:idUser',passport.authenticate('bearer', { session: false }), async (req, res)=>{
-    const addUsertoTodo = await Tuto.findByIdAndUpdate(
+    const addUsertoTodo = await Todo.findByIdAndUpdate(
         req.params.idTodo,
         {$push:{user: req.params.idUser}},
         {new: true}
@@ -31,7 +31,7 @@ router.put('/todos/affectUser/:idTodo/:idUser',passport.authenticate('bearer', {
 
 //desaffect User to Todo
 router.put('/todos/desaffectUser/:idTodo/:idUser',passport.authenticate('bearer', { session: false }), async (req, res)=>{
-    const addUsertoTodo = await Tuto.findByIdAndUpdate(
+    const addUsertoTodo = await Todo.findByIdAndUpdate(
         req.params.idTodo,
         {$pull:{user: req.params.idUser}},
         {new: true}
